@@ -15,11 +15,11 @@
 # Use: make [TARGET] [PLATFORM-OVERRIDES]
 #
 # Build Targets:
-#      %.i [TODO]
-#      %.asm [TODO]
+#      %.i
+#      %.asm
 #      %.o
 #      compile-all -> Compile all object files, but DO NOT link
-#      build -> Compile all object files and link into a final executable. [TODO]
+#      build -> Compile all object files and link into a final executable.
 #      clean -> This should remove all compiled objects, preprocessed outputs, assembly outputs, executable files and build output files.
 #
 # Platform Overrides:
@@ -54,6 +54,12 @@ endif
 # $^ all prerequisites
 # $< first prerequisite
 # $@ target
+
+%.i : %.c
+	$(CC) -E $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $^ -o $@
+
+%.asm : %.o
+	$(CC) -S $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $^ -o $@
 
 %.o: %.c
 	$(CC) -c $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $^ -o $@
