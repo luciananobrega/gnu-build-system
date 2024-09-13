@@ -17,10 +17,10 @@
 # Build Targets:
 #      %.i [TODO]
 #      %.asm [TODO]
-#      %.o [TODO]
-#      compile-all -> Compile all object files, but DO NOT link [TODO]
+#      %.o
+#      compile-all -> Compile all object files, but DO NOT link
 #      build -> Compile all object files and link into a final executable. [TODO]
-#      clean -> This should remove all compiled objects, preprocessed outputs, assembly outputs, executable files and build output files. [TODO]
+#      clean -> This should remove all compiled objects, preprocessed outputs, assembly outputs, executable files and build output files.
 #
 # Platform Overrides:
 #      MSP432
@@ -34,7 +34,7 @@ OBJS:=$(SOURCES:.c=.o) # from sources.mk
 
 # Architectures Specific Flags
 ifeq ($(PLATFORM), MSP432)
-	LINKER_FILE = msp432p401r.lds
+	LINKER_FILE = ../msp432p401r.lds
 	CPU = cortex-m4
 	ARCH = armv7e-m
 	SPECS = nosys.specs

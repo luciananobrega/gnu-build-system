@@ -10,7 +10,12 @@
 #*****************************************************************************
 
 ifeq ($(PLATFORM), MSP432)
-	SOURCES = *.c
+	SOURCES = interrupts_msp432p401r_gcc.c \
+		memory.c \
+		system_msp432p401r.c \
+		main.c \
+		startup_msp432p401r_gcc.c
+
 	INCLUDES = -I../include/common \
 		-I../include/msp432 \
 		-I../include/CMSIS
