@@ -14,8 +14,7 @@ ifeq ($(PLATFORM), MSP432)
 	INCLUDES = -I../include/common \
 		-I../include/msp432 \
 		-I../include/CMSIS
-else ifeq ($(PLATFORM), HOST)
-	SOURCES = memory.c \
-		main.c
+else
+	SOURCES = memory.c main.c
 	INCLUDES = -I../include/common
 endif

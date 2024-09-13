@@ -10,32 +10,65 @@
 #*****************************************************************************
 
 #------------------------------------------------------------------------------
-# <Put a Description Here>
+# Makefile to automate the build process
 #
 # Use: make [TARGET] [PLATFORM-OVERRIDES]
 #
 # Build Targets:
-#      <Put a description of the supported targets here>
+#      %.i [TODO]
+#      %.asm [TODO]
+#      %.o [TODO]
+#      compile-all -> Compile all object files, but DO NOT link [TODO]
+#      build -> Compile all object files and link into a final executable. [TODO]
+#      clean -> This should remove all compiled objects, preprocessed outputs, assembly outputs, executable files and build output files. [TODO]
 #
 # Platform Overrides:
-#      <Put a description of the supported Overrides here
+#      MSP432
+#      HOST
 #
 #------------------------------------------------------------------------------
 include sources.mk
 
-# Platform Overrides
-PLATFORM = 
+TARGET = demo
+OBJS:=$(SOURCES:.c=.o) # from sources.mk
 
 # Architectures Specific Flags
-LINKER_FILE = 
-CPU = 
-ARCH = 
-SPECS = 
+ifeq ($(PLATFORM), MSP432)
+	LINKER_FILE = msp432p401r.lds
+	CPU = cortex-m4
+	ARCH = armv7e-m
+	SPECS = nosys.specs
+	CC = arm-none-eabi-gcc
+	LD = arm-none-eabi-ld
+	LDFLAGS = -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
+	CFLAGS = -mcpu=$(CPU) -mthumb -march=$(ARCH) -mfloat-abi=hard -mfpu=fpv4-sp-d16 --specs=$(SPECS) -Wall -Werror -g -O0 -std=c99
+	CPPFLAGs = -DMSP432
+else  # for HOST, CPU and ARCH are automatically defined by gcc
+	CC = gcc
+	LD = ld
+	CFLAGS = -Wall -Werror -g -O0 -std=c99
+	CPPFLAGs = -DHOST
+endif  
 
-# Compiler Flags and Defines
-CC = 
-LD = 
-LDFLAGS = 
-CFLAGS = 
-CPPFLAGs = 
+
+# $^ all prerequisites
+# $< first prerequisite
+# $@ target
+
+%.o: %.c
+	$(CC) -c $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $^ -o $@
+
+$(TARGET).out: $(OBJS)
+	$(CC) $(OBJS) $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $(LDFLAGS) -o $@
+
+
+.PHONY: build
+build: $(TARGET).out
+
+.PHONY: compile-all
+compile-all: $(OBJS)
+
+.PHONY: clean
+clean:
+	rm -f $(OBJS) $(TARGET).out $(TARGET).map
 
