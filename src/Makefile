@@ -42,12 +42,12 @@ ifeq ($(PLATFORM), MSP432)
 	LD = arm-none-eabi-ld
 	LDFLAGS = -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
 	CFLAGS = -mcpu=$(CPU) -mthumb -march=$(ARCH) -mfloat-abi=hard -mfpu=fpv4-sp-d16 --specs=$(SPECS) -Wall -Werror -g -O0 -std=c99
-	CPPFLAGs = -DMSP432
+	CPPFLAGs = -DMSP432 -MD -MP
 else  # for HOST, CPU and ARCH are automatically defined by gcc
 	CC = gcc
 	LD = ld
 	CFLAGS = -Wall -Werror -g -O0 -std=c99
-	CPPFLAGs = -DHOST
+	CPPFLAGs = -DHOST -MD -MP
 endif  
 
 
@@ -76,5 +76,6 @@ compile-all: $(OBJS)
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(TARGET).out $(TARGET).map
+	# rm -f $(OBJS) $(TARGET).out $(TARGET).map
+	rm -f *.o *.out *.map *.d
 
