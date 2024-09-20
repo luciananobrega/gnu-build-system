@@ -58,7 +58,7 @@ endif
 %.i : %.c
 	$(CC) -E $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $^ -o $@
 
-%.asm : %.o
+%.asm : %.c
 	$(CC) -S $(INCLUDES) $(CFLAGS) $(CPPFLAGs) $^ -o $@
 
 %.o: %.c
@@ -77,5 +77,5 @@ compile-all: $(OBJS)
 .PHONY: clean
 clean:
 	# rm -f $(OBJS) $(TARGET).out $(TARGET).map
-	rm -f *.o *.out *.map *.d
+	rm -f *.o *.out *.map *.d *.i *.asm
 
